@@ -1,18 +1,41 @@
+require 'csv'
+require 'awesome_print'
+
+
 class WordGuess
+  attr_accessor :e, :m, :h
+
   def initialize(debug = false)
-    # are we in debug mode?
-    @debug = debug
 
     # possible words, selected at random
-    @words = {
-      "e" => %w(dog cat bug hat cap lit kin fan fin fun tan ten tin ton),
-      "m" => %w(plain claim brine crime alive bride skine drive slime stein jumpy),
-      "h" => %w(
-          machiavellian prestidigitation plenipotentiary quattuordecillion
-          magnanimous unencumbered bioluminescent circumlocution
-        )
-    }
+    words = []
+    counter = 1
 
+    @words = {
+     "e" => %w(dog cat bug hat cap lit kin fan fin fun tan ten tin ton),
+     "m" => %w(plain claim brine crime alive bride skine drive slime stein jumpy),
+     "h" => %w(
+         machiavellian prestidigitation plenipotentiary quattuordecillion
+         magnanimous unencumbered bioluminescent circumlocution
+       )
+   }
+    CSV.open('words.csv', 'r').each do |line|
+        if line[0] == "m"
+          line.each do |char|
+            words['m'] << char
+
+
+          end
+        end
+          # words['m'] << line[1]
+
+        end
+
+        ap line[0]
+
+    puts words
+      # are we in debug mode?
+    @debug = debug
     # players attempts allowed by difficulty
     @tries = {
       "e" => 10,
@@ -22,6 +45,8 @@ class WordGuess
 
     # ask the user to set the game mode
     mode = set_mode
+
+    puts mode
 
     @word    = @words[mode].sample # chosen word; players try to guess this
     @guesses = @tries[mode] # how many tries the player gets
@@ -131,4 +156,4 @@ class WordGuess
   end
 end
 
-WordGuess.new
+test = WordGuess.new
